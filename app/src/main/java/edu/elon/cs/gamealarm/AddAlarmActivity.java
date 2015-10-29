@@ -44,36 +44,13 @@ public class AddAlarmActivity extends Activity {
         minuteSpinner.setAdapter(minuteAdapter);
         hourSpinner.setSelection(hours[calendar.get(Calendar.HOUR_OF_DAY)]);
         minuteSpinner.setSelection(minutes[calendar.get(Calendar.MINUTE)]);
-        getIntent(); //not sure if this is needed..
     }
 
     public void onSaveClick(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        //TODO: Alternatively, we could put something here which appends to a file. not sure how yet
-        intent.putExtra("hours", (Integer) hourSpinner.getSelectedItem());
-        intent.putExtra("minutes", (Integer) minuteSpinner.getSelectedItem());
-        startActivity(intent);
+        Alarm alarm = new Alarm ((int) hourSpinner.getSelectedItem(), (int) minuteSpinner.getSelectedItem());
+        MainActivity.alarmArrayList.add(alarm);
+        System.out.println(MainActivity.alarmArrayList);
+        finish();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_alarm, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    
 }
