@@ -19,11 +19,14 @@ public class EditOrDeleteActivity extends Activity {
 
     public void onEditClick(View view){
         Intent intent = new Intent(this, AddAlarmActivity.class);
+        intent.putExtra("action", "edit");
         startActivity(intent);
+        finish();
     }
 
     public void onDeleteClick(View view){
         MainActivity.alarmArrayList.remove(MainActivity.relevantPosition);
+        MainActivity.arrayAdapter.notifyDataSetChanged();
         finish();
     }
 

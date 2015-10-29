@@ -22,7 +22,7 @@ public class AddAlarmActivity extends Activity {
     private Spinner minuteSpinner;
     private Integer[] hours;
     private Integer[] minutes;
-   private ArrayAdapter<Integer> hourAdapter;
+    private ArrayAdapter<Integer> hourAdapter;
     private ArrayAdapter<Integer> minuteAdapter;
 
     @Override
@@ -44,12 +44,25 @@ public class AddAlarmActivity extends Activity {
         minuteSpinner.setAdapter(minuteAdapter);
         hourSpinner.setSelection(hours[calendar.get(Calendar.HOUR_OF_DAY)]);
         minuteSpinner.setSelection(minutes[calendar.get(Calendar.MINUTE)]);
+        System.out.println("in add alarm");
     }
 
     public void onSaveClick(View view){
-        Alarm alarm = new Alarm ((int) hourSpinner.getSelectedItem(), (int) minuteSpinner.getSelectedItem());
-        MainActivity.alarmArrayList.add(alarm);
-        System.out.println(MainActivity.alarmArrayList);
+        int hours = (int) hourSpinner.getSelectedItem();
+        int minutes = (int) minuteSpinner.getSelectedItem();
+        Alarm alarm = new Alarm (hours, minutes);
+        System.out.println("intent string = " + getIntent().getStringExtra("action"));
+        if (getIntent().getStringExtra("action").equals("add")) {
+            System.out.println("check add");
+            MainActivity.alarmArrayList.add(alarm);
+        }
+        else if (getIntent().getStringExtra("action").equals("edit")){
+            System.out.println("check edit");
+            int currentIndex = MainActivity.relevantPosition;
+            MainActivity.alarmArrayList.get(currentIndex).setHours(hours);
+            MainActivity.alarmArrayList.get(currentIndex).setMinutes(minutes);
+        }
+        MainActivity.arrayAdapter.notifyDataSetChanged();
         finish();
     }
     

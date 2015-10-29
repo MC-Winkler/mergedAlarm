@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
     private ListView listView;
     protected static List<Alarm> alarmArrayList;
     protected static int relevantPosition;
-    private ArrayAdapter<Alarm> arrayAdapter;
+    protected static ArrayAdapter<Alarm> arrayAdapter;
 
 
     @Override
@@ -35,8 +35,7 @@ public class MainActivity extends Activity {
         //TODO: Remove - just for testing
 
         alarmArrayList.add(new Alarm (2,30));
-
-//        alarmArrayList.add(new Alarm(2, 4, 3, true));
+        alarmArrayList.add(new Alarm(2, 4));
 //        alarmArrayList.add(new Alarm(6, 12, 16, true));
 //        alarmArrayList.add(new Alarm(4, 3, 45, false));
 //        alarmArrayList.add(new Alarm(4, 3, 45, false));
@@ -94,13 +93,13 @@ public class MainActivity extends Activity {
     private void startEditOrDelete(){
         Intent intent = new Intent (this, EditOrDeleteActivity.class);
         startActivity(intent);
-        listView.invalidate();
+        arrayAdapter.notifyDataSetChanged();
     }
 
     public void onAddClick(View view){
         Intent intent = new Intent (this, AddAlarmActivity.class);
+        intent.putExtra("action", "add");
         startActivity(intent);
-        listView.invalidate();
     }
 }
 
