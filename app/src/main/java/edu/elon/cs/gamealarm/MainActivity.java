@@ -32,27 +32,9 @@ public class MainActivity extends Activity {
 
         alarmArrayList = new ArrayList<Alarm>();
 
-        //TODO: Remove - just for testing
 
-        alarmArrayList.add(new Alarm (2,30));
+        alarmArrayList.add(new Alarm (16,50));
         alarmArrayList.add(new Alarm(2, 4));
-//        alarmArrayList.add(new Alarm(6, 12, 16, true));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-//        alarmArrayList.add(new Alarm(4, 3, 45, false));
-
-        //TODO: code something that populates the array list with a file
-
 
         arrayAdapter = new ArrayAdapter<Alarm>(this,
                 android.R.layout.simple_list_item_1,
@@ -65,6 +47,9 @@ public class MainActivity extends Activity {
         listView.setOnItemLongClickListener(itemLongClickListener);
 
                     //add logic for re-ordering the list
+        System.out.println("about to start the alarm check service");
+        Intent intent = new Intent (this, AlarmCheckService.class);
+        startService(intent);
 
 
     }
@@ -73,13 +58,22 @@ public class MainActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Alarm current = alarmArrayList.get(position);
+            relevantPosition = position;
             if (current.isOn()) {
                 current.setOn(false);
-            }
-            else
+            } else {
                 current.setOn(true);
+                System.out.println("turned alarm on");
+                callService();
+            }
         }
     };
+
+    private void callService (){
+        Intent intent = new Intent (this, AlarmCheckService.class);
+        intent.putExtra("alarmIndex", relevantPosition);
+        startService(intent);
+    }
 
     AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
